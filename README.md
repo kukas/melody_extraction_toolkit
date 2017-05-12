@@ -4,6 +4,12 @@ Web application implementing and visualising state-of-the-art methods for melody
 ## about
 This is a semestral project that precedes my bachelor thesis on the same subject. 
 
+## Installation
+
+To install virtual environments (needed for running the algorithms), please run `algorithms/environments/install-environments.sh`.
+
+The _SourceFilterContoursMelody_ algorithm requires [Essentia](http://essentia.upf.edu/documentation/) which needs to be installed to the respective _virtualenv_.
+
 ## goals
 
 * frontend

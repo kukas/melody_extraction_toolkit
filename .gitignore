@@ -1,0 +1,6 @@
+algorithms/environments/MelodyExtraction_MCDNN
+algorithms/environments/singing_voice_separation_and_melody_extraction
+algorithms/environments/SourceFilterContoursMelody
+algorithms/singing_voice_separation_and_melody_extraction
+datasets/
+estimations/

@@ -1,0 +1,9 @@
+function switch_virtualenv {
+	algorithm=$1
+	# activate virtual environment
+	source environments/$1/bin/activate
+	cd $1/
+}
+
+input=$(realpath $1)
+output=$(realpath $2)
