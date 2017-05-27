@@ -10,6 +10,14 @@ To install virtual environments (needed for running the algorithms), please run 
 
 The _SourceFilterContoursMelody_ algorithm requires [Essentia](http://essentia.upf.edu/documentation/) which needs to be installed to the respective _virtualenv_.
 
+The application itself requires Python 3.6 and Flask. You can install it by running:
+`pip install flask`
+
+## Running
+
+To run the server execute:
+`python app.py`
+
 ## goals
 
 * frontend
