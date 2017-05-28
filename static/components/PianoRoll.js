@@ -18,7 +18,7 @@ export default {
       timeScale: 100,
       minTimeScale: 0,
       a4pitch: 440,
-      notes: [],
+      reference: [],
       estimation: [],
     }
   },
@@ -57,7 +57,7 @@ export default {
       axios.get(this.referenceSrc)
         .then(res => {
           if(res.status === 200){
-            this.notes = this.parseFreqs(res.data);
+            this.reference = this.parseFreqs(res.data);
             this.resetRange();
           }
         })
@@ -102,7 +102,7 @@ export default {
 
     resetRange(){
       // takes the second value in time-frequency tuples
-      var freqs = _.map(this.notes, 1);
+      var freqs = _.map(this.reference, 1);
       this.freqMin = _.min(freqs);
       this.freqMax = _.max(freqs);
     },
@@ -156,15 +156,16 @@ export default {
         ctx.translate(Math.round(-currentTimeScaled+this.width/2), 0);
       }
 
-      let noteWidth = 1;
-      if(this.notes.length >= 2){
-        noteWidth = Math.ceil((this.notes[1][0]-this.notes[0][0])*this.timeScale);
-      }
 
       [
-        {notes:this.notes, color:"#00dd5c"},
+        {notes:this.reference, color:"#00dd5c"},
         {notes:this.estimation, color:"rgba(0, 0, 0, 0.7)"}
       ].forEach(({notes, color}) => {
+        let noteWidth = 1;
+        if(notes.length >= 2){
+          noteWidth = Math.ceil((notes[1][0]-notes[0][0])*this.timeScale);
+        }
+
         notes.forEach(([time, freq]) => {
           time *= this.timeScale;
           time = Math.floor(time);
