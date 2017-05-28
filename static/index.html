@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Vue test</title>
+	<title>Melody Extraction Visualiser</title>
 </head>
 <body>
 
-<div id="app-3">
-  <p v-if="seen">Now you see me</p>
-</div>	
+<div id="app">
+  <piano-roll :reference-src="referenceSrc" :audio="player"></piano-roll>
 
-<script src="https://unpkg.com/vue"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+  <div class="file-chooser">
+    <input size="70" placeholder="audio file" v-model="audioSrc"><br>
+    <input size="70" placeholder="mel file" v-model="referenceSrc"><br>
+    <input size="70" placeholder="estimation file" v-model="estimationSrc"><br>
+  </div>
 
-<script src="app.js"></script>
+  <div class="audio-player">
+    <button id="playButton" :disabled="!audioLoaded" @click="player.play()">play</button>
+    <button id="stopButton" :disabled="currentTime == 0" @click="player.pause();player.currentTime=0">stop</button>
+  </div>
+</div>
+
+<script type="text/x-template" id="piano-roll">
+  <div class="piano-roll">
+    <canvas ref="canvas" :width=width :height=height></canvas>
+
+    scale: <input type="range" v-model="timeScale" min="0" max="200">
+  </div>
+</script>
+
+<script src="dist/bundle.js"></script>
 </body>
 </html>

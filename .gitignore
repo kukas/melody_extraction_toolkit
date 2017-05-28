@@ -4,3 +4,5 @@ algorithms/environments/SourceFilterContoursMelody
 algorithms/singing_voice_separation_and_melody_extraction
 datasets/
 estimations/
+static/node_modules/
+static/dist/
