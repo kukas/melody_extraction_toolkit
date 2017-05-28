@@ -38,6 +38,10 @@ export default {
   mounted () {
     this.ctx = this.$refs.canvas.getContext("2d");
 
+    this.audio.addEventListener("canplaythrough", (e) => {
+      this.fitScale();
+    });
+
     // load default files
     this.getNotesDebounced();
 
@@ -84,6 +88,10 @@ export default {
       var freqs = _.map(this.notes, 1);
       this.freqMin = _.min(freqs);
       this.freqMax = _.max(freqs);
+    },
+
+    fitScale(){
+      this.timeScale = this.width/this.audio.duration;
     },
 
     freqToNote(freq){
