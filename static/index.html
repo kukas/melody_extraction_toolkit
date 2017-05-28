@@ -6,7 +6,7 @@
 <body>
 
 <div id="app">
-  <piano-roll :reference-src="referenceSrc" :audio="player"></piano-roll>
+  <piano-roll ref="pianoRoll" :reference-src="referenceSrc" :estimation-src="estimationSrc" :audio="player"></piano-roll>
 
   <div class="file-chooser">
     <select v-model="currentDataset">
@@ -21,7 +21,13 @@
     <br>
     <input size="70" placeholder="audio file" v-model="audioSrc" disabled><br>
     <input size="70" placeholder="mel file" v-model="referenceSrc" disabled><br>
-    <!-- <input size="70" placeholder="estimation file" v-model="estimationSrc"><br> -->
+    <select v-model="currentAlgorithm">
+      <option disabled :value="false">Select algorithm</option>
+      <option v-for="algorithm in algorithms" :value="algorithm">{{algorithm}}</option>
+    </select>
+    <button @click="updateEstimation" :disabled="estimationSrc.length===0">run algorithm</button>
+    <br>
+    <input size="70" placeholder="estimation file" v-model="estimationSrc" disabled><br>
   </div>
 
   <div class="audio-player">

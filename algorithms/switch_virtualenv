@@ -4,6 +4,3 @@ function switch_virtualenv {
 	source environments/$1/bin/activate
 	cd $1/
 }
-
-input=$(realpath $1)
-output=$(realpath $2)

@@ -9,7 +9,6 @@ window.app = new Vue({
   data: {
     audioSrc: "/datasets/Orchset/audio/mono/Beethoven-S3-I-ex5.wav",
     referenceSrc: "/datasets/Orchset/GT/Beethoven-S3-I-ex5.mel",
-    estimationSrc: "",
 
     player: new Audio(),
     currentTime: 0,
@@ -18,6 +17,17 @@ window.app = new Vue({
     datasets: [],
     currentDataset: false,
     currentClip: false,
+
+    algorithms: [],
+    currentAlgorithm: false
+  },
+  computed: {
+    estimationSrc () {
+      if(this.currentAlgorithm && this.currentDataset && this.currentClip)
+        return "/getEstimation/"+this.currentAlgorithm+"/"+this.currentDataset.id+"/"+this.currentClip.audio;
+
+      return "";
+    }
   },
   components: {
     'piano-roll': PianoRoll,
@@ -34,6 +44,7 @@ window.app = new Vue({
       this.player.src = this.audioSrc;
 
       this.loadDatasets();
+      this.loadAlgorithms();
   },
   watch: {
     'audioSrc': _.debounce(function () {
@@ -51,16 +62,28 @@ window.app = new Vue({
       axios.get("/getDatasets")
         .then(res => {
           if(res.status === 200){
-            console.log(res.data);
             this.datasets = res.data;
-            // this.notes = this.parseFreqs(res.data);
-            // this.resetRange();
           }
         })
         .catch(error => {
           // TODO: prettier error catching
           console.error(error);
         });
-    }
+    },
+    loadAlgorithms () {
+      axios.get("/getAlgorithms")
+        .then(res => {
+          if(res.status === 200){
+            this.algorithms = res.data;
+          }
+        })
+        .catch(error => {
+          // TODO: prettier error catching
+          console.error(error);
+        });
+    },
+    updateEstimation () {
+      this.$refs.pianoRoll.loadEstimation();
+    },
   }
 })

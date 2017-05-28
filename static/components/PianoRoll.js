@@ -5,6 +5,7 @@ export default {
   template: '#piano-roll',
   props: {
     referenceSrc: String,
+    estimationSrc: String,
     audio: HTMLAudioElement
   },
 
@@ -16,7 +17,8 @@ export default {
       freqMax: 1000,
       timeScale: 100,
       a4pitch: 440,
-      notes: []
+      notes: [],
+      estimation: [],
     }
   },
 
@@ -63,6 +65,20 @@ export default {
           console.error(error);
         });
     }, 150),
+
+    loadEstimation () {
+      axios.get(this.estimationSrc)
+        .then(res => {
+          if(res.status === 200){
+            this.estimation = this.parseFreqs(res.data);
+            this.resetRange();
+          }
+        })
+        .catch(error => {
+          // TODO: prettier error catching
+          console.error(error);
+        });
+    },
 
     parseFreqs(plaintext){
       let notes = [];
@@ -140,19 +156,26 @@ export default {
         noteWidth = Math.ceil((this.notes[1][0]-this.notes[0][0])*this.timeScale);
       }
 
-      this.notes.forEach(([time, freq]) => {
-        time *= this.timeScale;
-        time = Math.floor(time);
-        ctx.fillStyle = "#00dd5c";
-        let noteY = this.height-(this.freqToNote(freq)-noteMin)*noteHeight;
-        ctx.fillRect(time, noteY, noteWidth, noteHeight);
+      [
+        {notes:this.notes, color:"#00dd5c"},
+        {notes:this.estimation, color:"rgba(0, 0, 0, 0.7)"}
+      ].forEach(({notes, color}) => {
+        notes.forEach(([time, freq]) => {
+          time *= this.timeScale;
+          time = Math.floor(time);
+          ctx.fillStyle = color;
+          let noteY = this.height-(this.freqToNote(freq)-noteMin)*noteHeight;
+          ctx.fillRect(time, noteY, noteWidth, noteHeight);
 
 
-        if(noteY > this.height || noteY < 0){
-          ctx.fillStyle = "#800";
-          ctx.fillRect(time, Math.max(0, Math.min(this.noteY, this.height))-2, noteWidth, 5);
-        }
-      });
+          if(noteY > this.height || noteY < 0){
+            ctx.fillStyle = "#800";
+            ctx.fillRect(time, Math.max(0, Math.min(this.noteY, this.height))-2, noteWidth, 5);
+          }
+        });
+        
+      })
+
 
       ctx.fillStyle = "#ff0000";
       ctx.fillRect(currentTimeScaled, 0, 3, this.height);

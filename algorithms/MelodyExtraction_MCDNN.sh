@@ -1,5 +1,8 @@
 #!/bin/bash
 
+input=$(realpath $1)
+output=$(realpath $2)
+
 # change directory to this scripts folder
 # (for relative paths to work)
 cd "$(dirname ${BASH_SOURCE[0]})"
