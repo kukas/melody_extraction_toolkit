@@ -33,7 +33,7 @@ export default {
 
   watch: {
     referenceSrc (newFile) {
-      this.getNotesDebounced();
+      this.loadReference();
     }
   },
 
@@ -45,14 +45,14 @@ export default {
     });
 
     // load default files
-    this.getNotesDebounced();
+    this.loadReference();
 
     this.render();
   },
 
   methods: {
     // debounce the function to prevent unnecessary queries on server
-    getNotesDebounced: _.debounce(function () {
+    loadReference () {
       axios.get(this.referenceSrc)
         .then(res => {
           if(res.status === 200){
@@ -64,7 +64,7 @@ export default {
           // TODO: prettier error catching
           console.error(error);
         });
-    }, 150),
+    },
 
     loadEstimation () {
       axios.get(this.estimationSrc)

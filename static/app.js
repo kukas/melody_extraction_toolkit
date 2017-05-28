@@ -47,10 +47,10 @@ window.app = new Vue({
       this.loadAlgorithms();
   },
   watch: {
-    'audioSrc': _.debounce(function () {
+    audioSrc () {
       this.player.src = this.audioSrc;
       this.audioLoaded = false;
-    }, 150),
+    },
 
     currentClip () {
       this.audioSrc = "datasets/"+this.currentDataset.id+"/"+this.currentClip.audio;
