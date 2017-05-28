@@ -9,9 +9,19 @@
   <piano-roll :reference-src="referenceSrc" :audio="player"></piano-roll>
 
   <div class="file-chooser">
-    <input size="70" placeholder="audio file" v-model="audioSrc"><br>
-    <input size="70" placeholder="mel file" v-model="referenceSrc"><br>
-    <input size="70" placeholder="estimation file" v-model="estimationSrc"><br>
+    <select v-model="currentDataset">
+      <option disabled :value="false">Select dataset</option>
+      <option v-for="dataset in datasets" :value="dataset">{{dataset.name}}</option>
+    </select>
+    <select v-if="currentDataset" v-model="currentClip">
+      <option disabled value="">Select clip</option>
+      <option v-for="clip in currentDataset.clips" :value="clip">{{clip.name}}</option>
+    </select>
+    <br>
+    <br>
+    <input size="70" placeholder="audio file" v-model="audioSrc" disabled><br>
+    <input size="70" placeholder="mel file" v-model="referenceSrc" disabled><br>
+    <!-- <input size="70" placeholder="estimation file" v-model="estimationSrc"><br> -->
   </div>
 
   <div class="audio-player">

@@ -19,8 +19,28 @@ DATASETS_DIR = "./datasets"
 
 @app.route('/getDatasets')
 def getDatasets():
+    def getClip(clip):
+        filename = os.path.basename(clip[0]) # removes the path
+        filename = os.path.splitext(filename)[0] # removes the extension
+        return {'name': filename, 'audio': clip[0], 'ref': clip[1]}
+
     datasetDirs = [x for x in os.listdir(DATASETS_DIR) if os.path.isdir(os.path.join(DATASETS_DIR, x))]
-    return json.dumps(datasetDirs);
+
+    datasets = []
+    for dataDir in datasetDirs:
+        filelistPath = os.path.join(DATASETS_DIR, dataDir, "filelist.txt")
+        if os.path.isfile(filelistPath):
+            with open(filelistPath) as f:
+                content = f.readlines()
+            # remove whitespaces
+            content = [x.strip() for x in content]
+            datasets.append({
+                'id': dataDir,
+                'name': content[0],
+                'clips': [getClip(line.split()) for line in content[1:]]
+                })
+
+    return json.dumps(datasets);
 
 @app.route('/datasets/<path:path>')
 def getAudio(path):
