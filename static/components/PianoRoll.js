@@ -148,7 +148,11 @@ export default {
       ctx.translate(pianoKeysWidth, 0);
 
       const currentTimeScaled = this.audio.currentTime*this.timeScale;
-      if(currentTimeScaled > this.width/2){
+      const durationScaled = this.audio.duration*this.timeScale;
+      if(currentTimeScaled > durationScaled-this.width/2){
+        ctx.translate(Math.round(-durationScaled+this.width), 0);
+      }
+      else if(currentTimeScaled > this.width/2){
         ctx.translate(Math.round(-currentTimeScaled+this.width/2), 0);
       }
 
