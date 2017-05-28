@@ -15,6 +15,7 @@ export default {
       freqMin: 27.5000,
       freqMax: 1000,
       timeScale: 100,
+      a4pitch: 440,
       notes: []
     }
   },
@@ -86,7 +87,7 @@ export default {
     },
 
     freqToNote(freq){
-      return 12*Math.log(freq/440)/Math.log(2)+49;
+      return 12*Math.log(freq/this.a4pitch)/Math.log(2)+49;
     },
 
     render () {
@@ -110,11 +111,13 @@ export default {
       let noteY = i => this.height-(i+1)*noteHeight
 
       // white and gray rows
+      ctx.save();
+      ctx.translate(0, (noteMin-Math.floor(noteMin))*noteHeight);
       for (let i = 0; i < Math.ceil(noteRange); i++) {
-
-        ctx.fillStyle = i%2==0 ? "#fff" : "#eee";
+        ctx.fillStyle = (Math.floor(noteMin)+i)%2==0 ? "#fff" : "#eee";
         ctx.fillRect(0, noteY(i), this.width, noteHeight);
       }
+      ctx.restore();
 
       ctx.save();
       ctx.translate(pianoKeysWidth, 0);
@@ -149,6 +152,8 @@ export default {
       ctx.restore();
 
       // piano keyboard
+      ctx.save();
+      ctx.translate(0, (noteMin-Math.floor(noteMin))*noteHeight);
       for (let i = 0; i < Math.ceil(noteRange); i++) {
         const note = Math.floor(noteMin)+i-1;
         const octave = note/12;
@@ -162,6 +167,7 @@ export default {
         if(noteInOctave == 0)
           ctx.fillText(noteNames[noteInOctave]+octave, 2, noteY(i)+noteHeight-2);
       }
+      ctx.restore();
     }
 
   }
