@@ -16,6 +16,7 @@ export default {
       freqMin: 27.5000,
       freqMax: 1000,
       timeScale: 100,
+      minTimeScale: 0,
       a4pitch: 440,
       notes: [],
       estimation: [],
@@ -107,7 +108,7 @@ export default {
     },
 
     fitScale(){
-      this.timeScale = this.width/this.audio.duration;
+      this.minTimeScale = this.timeScale = this.width/this.audio.duration;
     },
 
     freqToNote(freq){

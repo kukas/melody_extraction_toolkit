@@ -40,7 +40,7 @@
   <div class="piano-roll">
     <canvas ref="canvas" :width=width :height=height></canvas>
 
-    scale: <input type="range" v-model="timeScale" min="0" max="200">
+    scale: <input type="range" v-model="timeScale" :min="minTimeScale" max="200">
     pitch: <input type="range" v-model="a4pitch" min="420" max="460"> {{a4pitch}}Hz
   </div>
 </script>
