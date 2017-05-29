@@ -3,4 +3,4 @@
 	url = https://github.com/juanjobosch/SourceFilterContoursMelody.git
 [submodule "algorithms/MelodyExtraction_MCDNN"]
 	path = algorithms/MelodyExtraction_MCDNN
-	url = https://github.com/keums/MelodyExtraction_MCDNN.git
+	url = git@github.com:kukas/MelodyExtraction_MCDNN.git
