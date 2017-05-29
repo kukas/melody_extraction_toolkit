@@ -205,6 +205,46 @@ export default {
           ctx.fillText(noteNames[noteInOctave]+octave, 2, noteY(i)+noteHeight-2);
       }
       ctx.restore();
+    },
+
+    synthesize (notes) {
+      // console.log(notes);
+      // create web audio api context
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+      // create Oscillator node
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      notes.forEach(([time, freq], index, notes) => {
+        let nextTime = time;
+        if(index < notes.length-1)
+          nextTime = notes[index+1][0]
+
+        const dt = nextTime-time;
+        time += audioCtx.currentTime;
+
+        if(dt > 0.02){
+          gainNode.gain.setValueAtTime(0, time);
+          gainNode.gain.setValueAtTime(0.1, time+dt);
+        }
+
+        oscillator.frequency.setValueAtTime(freq, time);
+      });
+
+      // this.audio.volume = 0.1;
+      this.audio.play();
+
+      oscillator.type = 'square';
+      gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+      gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime + _.first(notes)[0]);
+      gainNode.gain.setValueAtTime(0, audioCtx.currentTime + _.last(notes)[0]);
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      oscillator.start();
+
+      // var source = audioCtx.createMediaElementSource(this.audio);
+      // source.connect(audioCtx.destination);
     }
 
   }

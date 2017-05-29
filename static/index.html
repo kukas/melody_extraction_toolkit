@@ -42,6 +42,8 @@
 
     scale: <input type="range" v-model="timeScale" :min="minTimeScale" max="200">
     pitch: <input type="range" v-model="a4pitch" min="420" max="460"> {{a4pitch}}Hz
+    <button @click="synthesize(reference)">play reference</button>
+    <button @click="synthesize(estimation)">play estimation</button>
   </div>
 </script>
 
