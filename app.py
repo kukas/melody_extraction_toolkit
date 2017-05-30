@@ -20,8 +20,8 @@ def getName(filename):
 
 @app.route("/getEstimation/<algorithm>/<dataset>/<path:clip>")
 def getEstimation(algorithm, dataset, clip):
-    algorithm += ".sh"
-    if not algorithm in os.listdir(ALGORITHMS_DIR):
+    algorithmScript = algorithm+".sh"
+    if not algorithmScript in os.listdir(ALGORITHMS_DIR):
         return "invalid algorithm", 403
     
     if not dataset in os.listdir(DATASETS_DIR):
@@ -31,14 +31,16 @@ def getEstimation(algorithm, dataset, clip):
     #     return "invalid clip path", 403
 
     # os.chdir("algorithms/MelodyExtraction_MCDNN")
-    scriptPath = os.path.join(ALGORITHMS_DIR, algorithm)
+    scriptPath = os.path.join(ALGORITHMS_DIR, algorithmScript)
     inputPath = os.path.join(DATASETS_DIR, dataset, clip)
 
-    outputFilename = getName(clip)+".txt"
+    outputFilename = algorithm+"-"+dataset+"-"+getName(clip)+".txt"
     outputPath = os.path.join(ESTIMATIONS_DIR, outputFilename)
 
     if not os.path.isfile(outputPath):
-        out = subprocess.check_output([scriptPath, inputPath, outputPath])
+        command = [scriptPath, inputPath, outputPath]
+        print("running:", " ".join(command))
+        out = subprocess.check_output(command)
     # print(type(out))
     # return "<pre>"+out.decode()+"</pre>"
     # return "hello wolrd"
