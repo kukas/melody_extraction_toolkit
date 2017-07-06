@@ -12,13 +12,10 @@ ALGORITHMS_DIR = "./algorithms"
 ESTIMATIONS_DIR = "./estimations"
 ALLOWED_EXTENSIONS = ['wav']
 
-
 app = Flask(__name__, static_url_path='')
 app.config['DEBUG'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['UPLOAD_FOLDER'] = UPLOADS_DIR
-
-
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -76,14 +73,14 @@ def upload_file():
 
     abort(405)
 
-def getName(filename):
+def get_name(filename):
     filename = os.path.basename(filename) # removes the path
     filename = os.path.splitext(filename)[0] # removes the extension
 
     return filename
 
 @app.route("/getEstimation/<algorithm>/<dataset>/<path:clip>")
-def getEstimation(algorithm, dataset, clip):
+def get_estimation(algorithm, dataset, clip):
     algorithmScript = algorithm+".sh"
     if not algorithmScript in os.listdir(ALGORITHMS_DIR):
         return "invalid algorithm", 403
@@ -99,7 +96,7 @@ def getEstimation(algorithm, dataset, clip):
 
     scriptPath = os.path.join(ALGORITHMS_DIR, algorithmScript)
 
-    outputFilename = algorithm+"-"+dataset+"-"+getName(clip)+".txt"
+    outputFilename = algorithm+"-"+dataset+"-"+get_name(clip)+".txt"
     outputPath = os.path.join(ESTIMATIONS_DIR, outputFilename)
     os.makedirs(ESTIMATIONS_DIR, exist_ok=True)
 
@@ -111,7 +108,7 @@ def getEstimation(algorithm, dataset, clip):
     return send_from_directory(ESTIMATIONS_DIR, outputFilename)
 
 @app.route('/getAlgorithms')
-def getAlgorithms():
+def get_algorithms():
     algorithms = []
     for x in os.listdir(ALGORITHMS_DIR):
         head, tail = os.path.splitext(x)
@@ -121,9 +118,9 @@ def getAlgorithms():
     return json.dumps(algorithms);
 
 @app.route('/getDatasets')
-def getDatasets():
-    def getClip(clip):
-        return {'name': getName(clip[0]), 'audio': clip[0], 'ref': clip[1]}
+def get_datasets():
+    def get_clip(clip):
+        return {'name': get_name(clip[0]), 'audio': clip[0], 'ref': clip[1]}
 
     datasetDirs = [x for x in os.listdir(DATASETS_DIR) if os.path.isdir(os.path.join(DATASETS_DIR, x))]
 
@@ -138,13 +135,13 @@ def getDatasets():
             datasets.append({
                 'id': dataDir,
                 'name': content[0],
-                'clips': [getClip(line.split()) for line in content[1:]]
+                'clips': [get_clip(line.split()) for line in content[1:]]
                 })
 
     return json.dumps(datasets);
 
 @app.route('/datasets/<path:path>')
-def getAudio(path):
+def get_audio(path):
     return send_from_directory(DATASETS_DIR, path)
 
 @app.route('/')

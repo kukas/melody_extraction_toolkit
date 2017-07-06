@@ -1,7 +1,7 @@
-# melody_extraction
+# Melody Extraction
 Web application implementing and visualising state-of-the-art methods for melody extraction
 
-## about
+## About
 This is a semestral project that precedes my bachelor thesis on the same subject. 
 
 ## Installation
