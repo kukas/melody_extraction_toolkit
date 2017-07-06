@@ -11,7 +11,7 @@ function install_virtualenv {
 echo "installation begin"
 
 install_virtualenv "MelodyExtraction_MCDNN" "python2.7"
-install_virtualenv "singing_voice_separation_and_melody_extraction" "python3.6"
+install_virtualenv "singing_voice_separation_and_melody_extraction" "python3"
 install_virtualenv "SourceFilterContoursMelody" "python2.7"
 
 echo "installation end"
