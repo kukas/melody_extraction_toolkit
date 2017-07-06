@@ -1,3 +1,5 @@
+melody_extraction.ini
+
 algorithms/environments/MelodyExtraction_MCDNN
 algorithms/environments/singing_voice_separation_and_melody_extraction
 algorithms/environments/SourceFilterContoursMelody
