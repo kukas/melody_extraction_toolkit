@@ -48,6 +48,7 @@ def upload_file():
         # seek because file.read() moves the stream position to the end
         file.seek(0)
         # save file
+        os.makedirs(UPLOADS_DIR, exist_ok=True)
         file.save(filepath)
 
         # check header (file command checks for "RIFF....WAVE" at the beginning of the uploaded file)
@@ -100,6 +101,7 @@ def getEstimation(algorithm, dataset, clip):
 
     outputFilename = algorithm+"-"+dataset+"-"+getName(clip)+".txt"
     outputPath = os.path.join(ESTIMATIONS_DIR, outputFilename)
+    os.makedirs(ESTIMATIONS_DIR, exist_ok=True)
 
     if not os.path.isfile(outputPath):
         command = [scriptPath, inputPath, outputPath]
