@@ -17,6 +17,10 @@
       <option disabled value="">Select clip</option>
       <option v-for="clip in currentDataset.clips" :value="clip">{{clip.name}}</option>
     </select>
+    <file-upload
+      @audio-source-change="setAudioSource"
+      @reference-source-change="setReferenceSource"
+      @player-source-change="setPlayerSource"></file-upload>
     <br>
     <br>
     <input size="70" placeholder="audio file" v-model="audioSrc" disabled><br>
@@ -44,6 +48,13 @@
     pitch: <input type="range" v-model="a4pitch" min="420" max="460"> {{a4pitch}}Hz
     <button @click="synthesize(reference)">play reference</button>
     <button @click="synthesize(estimation)">play estimation</button>
+  </div>
+</script>
+
+<script type="text/x-template" id="file-upload">
+  <div class="file-upload">
+    <label for="file-input">Audio upload</label><br>
+    <input type="file" id="file-input" @change="onFileChange">
   </div>
 </script>
 

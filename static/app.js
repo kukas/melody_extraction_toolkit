@@ -2,6 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 
 import PianoRoll from './components/PianoRoll';
+import FileUpload from './components/FileUpload';
 
 // I don't know how to export a constant :(
 window.app = new Vue({
@@ -23,18 +24,20 @@ window.app = new Vue({
   },
   computed: {
     estimationSrc () {
-      if(this.currentAlgorithm && this.currentDataset && this.currentClip)
-        return "/getEstimation/"+this.currentAlgorithm+"/"+this.currentDataset.id+"/"+this.currentClip.audio;
+      if(this.currentAlgorithm && this.audioSrc)
+        return "/getEstimation/"+this.currentAlgorithm+"/"+this.audioSrc;
 
       return "";
     }
   },
   components: {
     'piano-roll': PianoRoll,
+    'file-upload': FileUpload,
   },
   mounted () {
       this.player.addEventListener("canplaythrough", (e) => {
         this.audioLoaded = true;
+        console.log("audio loaded");
       });
 
       this.player.addEventListener("timeupdate", (e) => {
@@ -47,14 +50,13 @@ window.app = new Vue({
       this.loadAlgorithms();
   },
   watch: {
-    audioSrc () {
-      this.player.src = this.audioSrc;
-      this.audioLoaded = false;
-    },
-
     currentClip () {
-      this.audioSrc = "datasets/"+this.currentDataset.id+"/"+this.currentClip.audio;
-      this.referenceSrc = "datasets/"+this.currentDataset.id+"/"+this.currentClip.ref;
+      const audioSrc = this.currentDataset.id+"/"+this.currentClip.audio;
+      const referenceSrc = "datasets/"+this.currentDataset.id+"/"+this.currentClip.ref;
+
+      this.setAudioSource(audioSrc);
+      this.setPlayerSource("datasets/"+audioSrc);
+      this.setReferenceSource(referenceSrc);
     }
   },
   methods: {
@@ -85,5 +87,15 @@ window.app = new Vue({
     updateEstimation () {
       this.$refs.pianoRoll.loadEstimation();
     },
+    setAudioSource (src) {
+      this.audioSrc = src;
+    },
+    setPlayerSource (src) {
+      this.player.src = src;
+      this.audioLoaded = false;
+    },
+    setReferenceSource (src) {
+      this.referenceSrc = src;
+    }
   }
 })
