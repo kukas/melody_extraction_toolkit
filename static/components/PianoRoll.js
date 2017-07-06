@@ -54,11 +54,12 @@ export default {
   methods: {
     // debounce the function to prevent unnecessary queries on server
     loadReference () {
+      this.reference = [];
       axios.get(this.referenceSrc)
         .then(res => {
           if(res.status === 200){
             this.reference = this.parseFreqs(res.data);
-            this.resetRange();
+            this.resetRange(this.reference);
           }
         })
         .catch(error => {
@@ -68,11 +69,12 @@ export default {
     },
 
     loadEstimation () {
+      this.estimation = [];
       axios.get(this.estimationSrc)
         .then(res => {
           if(res.status === 200){
             this.estimation = this.parseFreqs(res.data);
-            this.resetRange();
+            this.resetRange(this.estimation);
           }
         })
         .catch(error => {
@@ -100,9 +102,9 @@ export default {
       return notes;
     },
 
-    resetRange(){
+    resetRange(notes){
       // takes the second value in time-frequency tuples
-      var freqs = _.map(this.reference, 1);
+      var freqs = _.map(notes, 1);
       this.freqMin = _.min(freqs);
       this.freqMax = _.max(freqs);
     },
