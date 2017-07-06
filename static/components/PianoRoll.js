@@ -105,7 +105,9 @@ export default {
     resetRange(notes){
       // takes the second value in time-frequency tuples
       var freqs = _.map(notes, 1);
-      this.freqMin = _.min(freqs);
+      // negative frequencies are allowed in f0 estimations
+      // according to MIREX standard
+      this.freqMin = _.min(_.filter(freqs, f => f > 0));
       this.freqMax = _.max(freqs);
     },
 
