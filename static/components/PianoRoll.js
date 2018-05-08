@@ -90,7 +90,7 @@ export default {
       lines.forEach((line) => {
         if(!line)
           return true;
-        line = line.split(/\s+/, 2);
+        line = line.split(/\s+|,/, 2);
         line[0] = parseFloat(line[0]);
         line[1] = parseFloat(line[1]);
         if(line[1] == 0)

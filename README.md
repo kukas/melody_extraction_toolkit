@@ -13,6 +13,8 @@ The _SourceFilterContoursMelody_ algorithm requires [Essentia](http://essentia.u
 The application itself requires Python 3.6 and Flask. You can install it by running:
 `pip install flask`
 
+Also `shntool` is required for uploaded wav file verification
+
 ## Running
 
 To run the server execute:
